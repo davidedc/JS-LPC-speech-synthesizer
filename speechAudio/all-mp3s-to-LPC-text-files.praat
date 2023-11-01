@@ -1,5 +1,5 @@
 # Define the directory containing the sound files
-directory$ = "/Users/davidedellacasa/Desktop/mysw/LPC-speech-synthesizer/speechAudio"
+directory$ = "/Users/davidedellacasa/Desktop/mysw/JS-LPC-speech-synthesizer/speechAudio"
 
 # Create a list of all sound files in the directory
 Create Strings as file list: "soundFilesList", directory$ + "/mp3/*.mp3"

@@ -1,2 +1,2 @@
-# LPC-speech-synthesizer
+# JS-LPC-speech-synthesizer
  Linear predictive coding speech synthesizer
