@@ -10,6 +10,7 @@ if (document.getElementById('playButton')) {
 }
 
 removeAllCanvasesFromDocument();
+removeDownloadLinkFromDocument();
 
 let pitch = 150;
 let sampleRate = 1 / lpcModelData.samplingPeriod;;
@@ -26,7 +27,8 @@ playButton.addEventListener('click', function() { // Assuming a button with this
     let { min, max } = findBufferMinMax(pcmSignalBuffer);
 
     removeAllCanvasesFromDocument(); 
-    
+    removeDownloadLinkFromDocument();
+
     // add a canvas that shows equi-spaced values of the pcmSignalBuffer values
     const waveformPlot = new BasicWaveformPlot();
     waveformPlot.attachToDocument();
@@ -48,6 +50,13 @@ playButton.addEventListener('click', function() { // Assuming a button with this
     createLinkToDownloadPCMBufferAsWavFile(buffer);
 
 });
+
+function removeDownloadLinkFromDocument() {
+    let downloadLink = document.getElementById('downloadLink');
+    if (downloadLink) {
+        document.body.removeChild(downloadLink);
+    }
+}
 
 //////////////////////////////////////////////////////////////////////////////////////////
 // Auxiliary functions
@@ -73,6 +82,8 @@ function createLinkToDownloadPCMBufferAsWavFile(buffer) {
     let wavBlob = audioBufferToWavBlob(buffer);
     let wavBlobUrl = window.URL.createObjectURL(wavBlob);
     let wavBlobLink = document.createElement('a');
+    // give the link an id so we can remove it from the document if we need to
+    wavBlobLink.id = 'downloadLink';
     wavBlobLink.href = wavBlobUrl;
     wavBlobLink.download = 'audio.wav';
     wavBlobLink.innerHTML = 'download';
