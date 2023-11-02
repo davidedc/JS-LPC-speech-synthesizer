@@ -25,6 +25,8 @@ playButton.addEventListener('click', function() { // Assuming a button with this
     
     // print out the minimum and maximum values of the pcmSignalBuffer
     let { min, max } = findBufferMinMax(pcmSignalBuffer);
+    console.log("min: " + min);
+    console.log("max: " + max);
 
     removeAllCanvasesFromDocument(); 
     removeDownloadLinkFromDocument();
@@ -32,7 +34,7 @@ playButton.addEventListener('click', function() { // Assuming a button with this
     // add a canvas that shows equi-spaced values of the pcmSignalBuffer values
     const waveformPlot = new BasicWaveformPlot();
     waveformPlot.attachToDocument();
-    waveformPlot.visualize(pcmSignalBuffer, min, max);
+    waveformPlot.visualize(pcmSignalBuffer, -1, 1, min, max);
 
     // play the pcmSignalBuffer
     let audioContext = new AudioContext();
@@ -73,8 +75,6 @@ function findBufferMinMax(pcmSignalBuffer) {
             max = pcmSignalBuffer[i];
         }
     }
-    console.log("min: " + min);
-    console.log("max: " + max);
     return { min, max };
 }
 
