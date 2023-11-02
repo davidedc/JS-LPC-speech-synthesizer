@@ -28,7 +28,9 @@ playButton.addEventListener('click', function() { // Assuming a button with this
     removeAllCanvasesFromDocument(); 
     
     // add a canvas that shows equi-spaced values of the pcmSignalBuffer values
-    visualiseAudioBuffer(min, max);
+    const waveformPlot = new BasicWaveformPlot();
+    waveformPlot.attachToDocument();
+    waveformPlot.visualize(pcmSignalBuffer, min, max);
 
     // play the pcmSignalBuffer
     let audioContext = new AudioContext();
