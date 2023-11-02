@@ -174,8 +174,8 @@ dropdown.addEventListener('change', function() {
 // add a textbox and a play button to the document
 let textbox = document.createElement('textarea');
 textbox.id = 'textbox';
-// pre-populate the textbox with the sentence "one day"
-textbox.textContent = 'one day';
+// pre-populate the textbox with the sentence selected in the dropdown
+textbox.textContent = dropdown.value;
 document.body.appendChild(textbox);
 
 let playButton = document.createElement('button');
