@@ -1,54 +1,5 @@
 var allWordsLPCModels = [];
 
-class Job {
-    constructor(data) {
-        this.data = data;
-    }
-
-    execute(onSuccess, onError) {
-        throw new Error("Execute method should be implemented by subclasses.");
-    }
-}
-
-class LoadWordDataJob extends Job {
-    execute(onSuccess, onError) {
-        var script = document.createElement('script');
-        script.src = `speechAudio/json-js/${this.data}.mp3.LPC.json.js`;
-
-        // when the script is loaded, first call the "loaded" method in this class, then call the "onSuccess" function
-        script.onload = () => {
-            this.loaded();
-            onSuccess();
-        };
-        script.onerror = onError;
-
-        document.head.appendChild(script);
-    }
-
-    loaded() {
-        console.log(`Loaded script for "${this.data}".`);
-        allWordsLPCModels.push(lpcModelData);
-    }
-}
-
-class JobQueue {
-    constructor() {
-        this.queue = [];
-    }
-
-    enqueue(job) {
-        this.queue.push(job);
-    }
-
-    dequeue() {
-        return this.queue.shift();
-    }
-
-    isEmpty() {
-        return this.queue.length === 0;
-    }
-}
-
 function exception(word) {
     console.error(`Exception: The script for "${word}" does not exist after 3 attempts.`);
 }
@@ -70,17 +21,6 @@ function buildPCMForAllWords() {
 }
 
 var pcmSignalBuffers = [];
-
-class BuildPCMJob extends Job {
-    execute(onSuccess, onError) {
-        let pitch = 150;
-        let sampleRate = 1 / this.data.samplingPeriod;
-        let carrierSignalGenerator = new CarrierSignalGenerator(pitch, sampleRate);
-        let pcmSignalBuilder = new LPCtoPCMSignalConverter();
-        pcmSignalBuffers.push(pcmSignalBuilder.build(this.data, pitch, false, carrierSignalGenerator));
-        onSuccess();
-    }
-}
 
 function playPCMForAllWords() {
     playPCMOfNextWord();
