@@ -86,14 +86,31 @@ function playPCMForAllWords() {
     playPCMOfNextWord();
 }
 
+// play all the pcmSignalBuffers in sequence
 function playPCMOfNextWord() {
-    // play all the pcmSignalBuffers in sequence
+    let numberOfFadeInSamples = 50;
+    let numberOfFadeoutSamples = 50;
     let audioContext = new AudioContext();
-    let buffer = audioContext.createBuffer(1, pcmSignalBuffers[0].length, 1 / allWordsLPCModels[0].samplingPeriod);
+    let bufferLength = pcmSignalBuffers[0].length;
+
+    let buffer = audioContext.createBuffer(1, bufferLength, 1 / allWordsLPCModels[0].samplingPeriod);
     let channelData = buffer.getChannelData(0);
-    for (let i = 0; i < pcmSignalBuffers[0].length; ++i) {
-        channelData[i] = pcmSignalBuffers[0][i];
+
+    // add the samples, but multiply the first numberOfFadeInSamples by a linear ramp from 0 to 1
+    // and the last numberOfFadeoutSamples by a linear ramp from 1 to 0
+    for (let i = 0; i < bufferLength; ++i) {
+        let gain = 1;
+        if (i < numberOfFadeInSamples) {
+            gain = i / numberOfFadeInSamples;
+        } else if (i > bufferLength - numberOfFadeoutSamples) {
+            // making sure that the last sample is 0
+            gain = (bufferLength - i - 1) / numberOfFadeoutSamples;
+        }
+
+        channelData[i] = pcmSignalBuffers[0][i] * gain;
     }
+
+
     let source = audioContext.createBufferSource();
     source.buffer = buffer;
     source.connect(audioContext.destination);
