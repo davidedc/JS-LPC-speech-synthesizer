@@ -154,7 +154,6 @@ const sentences = [
     'They can make a new day for all people',
     'People say that only time will tell if he can make a new way for them',
     'He can also find time to be with her on a day',
-    'People can make a day by giving simple things',
     'We can all make one day new by our way',
     'We can all make time for more',
     'We can make a new day by the way we see and think about people',
