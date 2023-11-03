@@ -4,9 +4,9 @@
 const fs = require('fs');
 const path = require('path');
 
-function parseLPCData(text) {
+function parseLPCData(text, trimSilence, trimQuiet) {
     const lines = text.split('\n');
-    const data = {};
+    let data = {};
     let currentFrame = null;
 
     for (const line of lines) {
@@ -55,8 +55,72 @@ function parseLPCData(text) {
         }
     }
 
+    if (trimSilence) {
+        data = trimSilentFrames(data);
+    }
+
+    if (trimQuiet) {
+        data = trimQuietFrames(data);
+    }
+
     return data;
 }
+
+function trimSilentFrames(data) {
+    let startIndex = 0;
+    let endIndex = data.frames.length;
+
+    // Find the first non-empty frame index
+    while (startIndex < data.frames.length && data.frames[startIndex].a.length === 0) {
+        startIndex++;
+    }
+
+    // Find the last non-empty frame index
+    while (endIndex > 0 && data.frames[endIndex - 1].a.length === 0) {
+        endIndex--;
+    }
+
+    // print out the count of the dropped frames
+    if (startIndex > 0 || endIndex < data.frames.length) {
+        console.log(`SILENT - Trimmed ${startIndex} frames from the beginning and ${data.frames.length - endIndex} frames from the end.`);
+    }
+    
+    // If there are empty frames at the beginning or the end, trim them
+    if (startIndex > 0 || endIndex < data.frames.length) {
+        data.frames = data.frames.slice(startIndex, endIndex);
+    }
+
+    
+    return data;
+}
+
+function trimQuietFrames(data) {
+    let startIndex = 0;
+    let endIndex = data.frames.length;
+
+    // Find the first non-empty frame index
+    while (startIndex < data.frames.length && data.frames[startIndex].gain < 1e-6) {
+        startIndex++;
+    }
+
+    // Find the last non-empty frame index
+    while (endIndex > 0 && data.frames[endIndex - 1].gain < 1e-10) {
+        endIndex--;
+    }
+
+    // print out the count of the dropped frames
+    if (startIndex > 0 || endIndex < data.frames.length) {
+        console.log(`QUIET - Trimmed ${startIndex} frames from the beginning and ${data.frames.length - endIndex} frames from the end.`);
+    }
+    
+    // If there are empty frames at the beginning or the end, trim them
+    if (startIndex > 0 || endIndex < data.frames.length) {
+        data.frames = data.frames.slice(startIndex, endIndex);
+    }
+
+    return data;
+}
+
 
 function processData(inputFilePath, outputFilePath) {
     fs.readFile(inputFilePath, 'utf8', (err, text) => {
@@ -65,7 +129,7 @@ function processData(inputFilePath, outputFilePath) {
             return;
         }
 
-        const lpcModelData = parseLPCData(text);
+        const lpcModelData = parseLPCData(text, trimSilence, trimQuiet);
 
         const jsContent = `lpcModelData = ${JSON.stringify(lpcModelData, null, 2)};`;
 
@@ -82,9 +146,21 @@ function processData(inputFilePath, outputFilePath) {
 
 const inputFilePath = process.argv[2];
 const outputFilePath = process.argv[3];
+let trimSilence = false;
+let trimQuiet = false;
+
+// Check if the --trimSilence argument is present
+process.argv.forEach(arg => {
+    if (arg === '--trimSilence') {
+        trimSilence = true;
+    }
+    if (arg === '--trimQuiet') {
+        trimQuiet = true;
+    }
+});
 
 if (!inputFilePath || !outputFilePath) {
     console.error('Please specify both input and output file paths.');
 } else {
-    processData(inputFilePath, outputFilePath);
+    processData(inputFilePath, outputFilePath, trimSilence, trimQuiet);
 }
