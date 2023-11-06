@@ -28,7 +28,7 @@ class LoadWordDataJob extends Job {
 
         // when the script is loaded, first call the "loaded" method in this class, then call the "success" function
         script.onload = () => {
-            this.loaded();
+            this.loaded(script);
             this.success();
         };
         script.onerror = this.onError;
@@ -36,10 +36,11 @@ class LoadWordDataJob extends Job {
         document.head.appendChild(script);
     }
 
-    loaded() {
+    loaded(scriptElement) {
         console.log(`Loaded script for "${this.wordAsString}".`);
 
         this.jobQueue.workingData = this.jobQueue.workingData || [];
         this.jobQueue.workingData.push(lpcModelData);
+        scriptElement.remove();
     }
 }

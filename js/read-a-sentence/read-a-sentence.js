@@ -55,9 +55,6 @@ function playPCMOfNextWord(pcmSignalBuffersAndSampleRates) {
         if (pcmSignalBuffersAndSampleRates.length > 0) {
             playPCMOfNextWord(pcmSignalBuffersAndSampleRates);
         }
-        else {
-            removeLPCJSONDataJSScripts();
-        }
     }
 }
 
@@ -119,14 +116,3 @@ playButton.addEventListener('click', function() {
 
     jobQueue.startJobs(buildPCMForAllWords);
 });
-
-// a function that removes all the data scripts
-function removeLPCJSONDataJSScripts() {
-    debugger
-    let scripts = document.querySelectorAll('script');
-    scripts.forEach(script => {
-        if (script.src.endsWith('LPC.json.js')) {
-            script.remove();
-        }
-    });
-}
