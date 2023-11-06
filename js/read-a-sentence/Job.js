@@ -1,9 +1,17 @@
 class Job {
-    constructor(data) {
-        this.data = data;
-    }
 
-    execute(onSuccess, onError) {
+    execute() {
         throw new Error("Execute method should be implemented by subclasses.");
     }
+
+    success() {
+        let jobQueue = this.jobQueue;
+        let job = jobQueue.dequeue();
+        if (jobQueue.isEmpty()) {
+            jobQueue.onFinish(jobQueue.workingData);
+            return;
+        }
+        jobQueue.executeNextJob();
+    }
+
 }

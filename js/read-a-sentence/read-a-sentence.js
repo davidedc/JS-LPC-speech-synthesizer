@@ -1,15 +1,9 @@
-var allWordsLPCModels = [];
-
 function exception(word) {
     console.error(`Exception: The script for "${word}" does not exist after 3 attempts.`);
 }
 
-function done() {
-    console.log("All scripts loaded or exceptions handled.");
-    buildPCMForAllWords();
-}
 
-function buildPCMForAllWords() {
+function buildPCMForAllWords(allWordsLPCModels) {
     let jobQueue = new JobQueue();
 
     allWordsLPCModels.forEach(lpcModelData => {
@@ -17,23 +11,23 @@ function buildPCMForAllWords() {
         jobQueue.enqueue(job);
     });
 
-    processJobs(jobQueue, playPCMForAllWords);
+    jobQueue.startJobs(playPCMForAllWords);
+
 }
 
-var pcmSignalBuffers = [];
-
-function playPCMForAllWords() {
-    playPCMOfNextWord();
+function playPCMForAllWords(pcmSignalBuffersAndSampleRates) {
+    playPCMOfNextWord(pcmSignalBuffersAndSampleRates);
 }
 
-// play all the pcmSignalBuffers in sequence
-function playPCMOfNextWord() {
+// play all the pcmSignalBuffersAndSampleRates in sequence
+function playPCMOfNextWord(pcmSignalBuffersAndSampleRates) {
     let numberOfFadeInSamples = 50;
     let numberOfFadeoutSamples = 50;
     let audioContext = new AudioContext();
-    let bufferLength = pcmSignalBuffers[0].length;
+    let firstSignalBufferAndSampleRate = pcmSignalBuffersAndSampleRates[0];
+    let bufferLength = firstSignalBufferAndSampleRate.pcmSignal.length;
 
-    let buffer = audioContext.createBuffer(1, bufferLength, 1 / allWordsLPCModels[0].samplingPeriod);
+    let buffer = audioContext.createBuffer(1, bufferLength, firstSignalBufferAndSampleRate.sampleRate);
     let channelData = buffer.getChannelData(0);
 
     // add the samples, but multiply the first numberOfFadeInSamples by a linear ramp from 0 to 1
@@ -47,7 +41,7 @@ function playPCMOfNextWord() {
             gain = (bufferLength - i - 1) / numberOfFadeoutSamples;
         }
 
-        channelData[i] = pcmSignalBuffers[0][i] * gain;
+        channelData[i] = firstSignalBufferAndSampleRate.pcmSignal[i] * gain;
     }
 
 
@@ -57,47 +51,11 @@ function playPCMOfNextWord() {
     source.start();
 
     source.onended = () => {
-        pcmSignalBuffers.shift();
-        allWordsLPCModels.shift();
-        if (pcmSignalBuffers.length > 0) {
-            playPCMOfNextWord();
+        pcmSignalBuffersAndSampleRates.shift();
+        if (pcmSignalBuffersAndSampleRates.length > 0) {
+            playPCMOfNextWord(pcmSignalBuffersAndSampleRates);
         }
     }
-}
-
-
-function processJobs(jobQueue, done) {
-    const MAX_ATTEMPTS = 3;
-    let attempts = {};
-
-    function processNext() {
-        if (jobQueue.isEmpty()) {
-            done();
-            return;
-        }
-
-        let job = jobQueue.dequeue();
-        let word = job.data;
-        attempts[word] = (attempts[word] || 0) + 1;
-
-        job.execute(
-            () => {
-                processNext();
-            },
-            () => {
-                if (attempts[word] < MAX_ATTEMPTS) {
-                    console.log(`Retrying to load script for "${word}". Attempt ${attempts[word]}`);
-                    jobQueue.enqueue(job); // Re-add the job to the queue
-                    processNext();
-                } else {
-                    exception(word);
-                    processNext();
-                }
-            }
-        );
-    }
-
-    processNext();
 }
 
 
@@ -156,5 +114,5 @@ playButton.addEventListener('click', function() {
         jobQueue.enqueue(job);
     });
 
-    processJobs(jobQueue, done);
+    jobQueue.startJobs(buildPCMForAllWords);
 });
