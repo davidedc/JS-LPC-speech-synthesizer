@@ -8,9 +8,18 @@
 </html>
 
 <script>
-  // this will be filled by the testLPCData.js script
+  var lpcModelData = null; // filled by the testLPCData.js script
+  var availableWords = null;
+</script>
+
+<script src="speechAudio/available-words.js"></script>
+<script src="speechAudio/json-js/as.mp3.LPC.json.js"></script>
+
+<script>
+  var asModelData = lpcModelData;
   var lpcModelData = null;
 </script>
+  
 
 <script src="js/RosenbergModelGlottalPulseGenerator.js"></script>
 <script src="js/LPCtoPCMSignalConverter.js"></script>
@@ -25,3 +34,16 @@
 <script src="js/read-a-sentence/LoadWordDataJob.js"></script>
 <script src="js/read-a-sentence/BuildPCMJob.js"></script>
 <script src="js/read-a-sentence/read-a-sentence.js"></script>
+
+<script>
+  // this one loads "as" and uses its last part as the "s" of plurals (the plurals that end with s, that is)
+  let pitch = 150;
+  let sampleRate = 1 / asModelData.samplingPeriod;
+  let carrierSignalGenerator = new CarrierSignalGenerator(pitch, sampleRate);
+  let pcmSignalBuilder = new LPCtoPCMSignalConverter();
+  var asPCMSignal= pcmSignalBuilder.build(asModelData, pitch, false, carrierSignalGenerator);
+  let numberOfSamplesToAppend = 2700;
+  let sSignal = asPCMSignal.slice(-numberOfSamplesToAppend);
+  delete asPCMSignal;
+
+</script>

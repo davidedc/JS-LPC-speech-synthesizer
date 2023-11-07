@@ -74,7 +74,8 @@ const sentences = [
     'We can make a new day by the way we see and think about people',
     'Have time to think',
     'People can make more time for their day',
-    'Can you find the man'
+    'Can you find the man',
+    'days finds gives hers'
 ];
 
 sentences.forEach((sentence) => {

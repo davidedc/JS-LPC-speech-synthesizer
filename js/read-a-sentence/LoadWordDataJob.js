@@ -2,10 +2,30 @@ class LoadWordDataJob extends Job {
 
     constructor(wordAsString) {
         super();
-        this.wordAsString = wordAsString;
+        this.wordAsString = wordAsString.toLowerCase();
+        this.actualWordBeingLoaded = wordAsString;
     }
 
     execute() {
+        // if the word is in the availableWords array, then load the data for the word
+        if (availableWords.includes(this.wordAsString)) {
+            this.loadWordData();
+            return
+        }
+        // if the word ends with an 's', then try to load the data for the word without the 's'
+        if (this.wordAsString.endsWith('s')) {
+            let wordWithoutS = this.wordAsString.slice(0, -1);
+            if (availableWords.includes(wordWithoutS)) {
+                this.actualWordBeingLoaded = wordWithoutS;
+                this.loadWordData();
+                return;
+            }
+        }
+        console.error(`Exception: no audio data for word "${this.wordAsString}"`);
+
+    }
+
+    loadWordData() {
         this.MAX_ATTEMPTS = 3;
         this.attempts = 0;
         this.loadJS();
@@ -24,7 +44,7 @@ class LoadWordDataJob extends Job {
     loadJS() {
         this.attempts++;
         var script = document.createElement('script');
-        script.src = `speechAudio/json-js/${this.wordAsString}.mp3.LPC.json.js`;
+        script.src = `speechAudio/json-js/${this.actualWordBeingLoaded}.mp3.LPC.json.js`;
 
         // when the script is loaded, first call the "loaded" method in this class, then call the "success" function
         script.onload = () => {
@@ -37,10 +57,10 @@ class LoadWordDataJob extends Job {
     }
 
     loaded(scriptElement) {
-        console.log(`Loaded script for "${this.wordAsString}".`);
+        console.log(`Loaded script for "${this.actualWordBeingLoaded}".`);
 
         this.jobQueue.workingData = this.jobQueue.workingData || [];
-        this.jobQueue.workingData.push(lpcModelData);
+        this.jobQueue.workingData.push({lpcModelData, wordAsString: this.wordAsString, actualWordLoaded: this.actualWordBeingLoaded});
         scriptElement.remove();
     }
 }
