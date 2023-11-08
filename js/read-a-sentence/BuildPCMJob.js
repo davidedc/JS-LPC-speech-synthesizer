@@ -13,7 +13,6 @@ class BuildPCMJob extends Job {
     execute() {
         
         let pitch = 0;
-        debugger
         
         // if this one is a verb and the next one is not a verb, then increase the pitch
         // we do this so that "multiple verb words" are not too monotonous
