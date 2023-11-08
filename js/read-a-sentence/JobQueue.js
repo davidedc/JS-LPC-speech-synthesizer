@@ -22,6 +22,14 @@ class JobQueue {
         return this.queue[0];
     }
 
+    lastJob() {
+        return this.queue[this.queue.length - 1];
+    }
+
+    penuiltimateJob(job) {
+        return this.queue[this.queue.length - 2];
+    }
+
     isEmpty() {
         return this.queue.length === 0;
     }
