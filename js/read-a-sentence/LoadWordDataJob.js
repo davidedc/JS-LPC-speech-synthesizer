@@ -1,9 +1,12 @@
 class LoadWordDataJob extends Job {
 
-    constructor(wordAsString) {
+    constructor(wordAsString, isNoun, isVerb, wordNumber) {
         super();
         this.wordAsString = wordAsString.toLowerCase();
         this.actualWordBeingLoaded = wordAsString;
+        this.isNoun = isNoun;
+        this.isVerb = isVerb;
+        this.wordNumber = wordNumber;
     }
 
     execute() {
@@ -60,7 +63,7 @@ class LoadWordDataJob extends Job {
         console.log(`Loaded script for "${this.actualWordBeingLoaded}".`);
 
         this.jobQueue.workingData = this.jobQueue.workingData || [];
-        this.jobQueue.workingData.push({lpcModelData, wordAsString: this.wordAsString, actualWordLoaded: this.actualWordBeingLoaded});
+        this.jobQueue.workingData.push({lpcModelData, wordAsString: this.wordAsString, actualWordLoaded: this.actualWordBeingLoaded, isNoun: this.isNoun, isVerb: this.isVerb, wordNumber: this.wordNumber});
         scriptElement.remove();
     }
 }

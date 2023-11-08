@@ -33,7 +33,6 @@
 <script src="js/read-a-sentence/Job.js"></script>
 <script src="js/read-a-sentence/LoadWordDataJob.js"></script>
 <script src="js/read-a-sentence/BuildPCMJob.js"></script>
-<script src="js/read-a-sentence/read-a-sentence.js"></script>
 
 <script>
   // this one loads "as" and uses its last part as the "s" of plurals (the plurals that end with s, that is)
@@ -45,5 +44,7 @@
   let numberOfSamplesToAppend = 2700;
   let sSignal = asPCMSignal.slice(-numberOfSamplesToAppend);
   delete asPCMSignal;
-
 </script>
+
+<script src="js/read-a-sentence/libs/compromise-14.10.0/compromise.js "></script>
+<script src="js/read-a-sentence/read-a-sentence.js"></script>

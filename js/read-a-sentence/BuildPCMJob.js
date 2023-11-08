@@ -5,10 +5,41 @@ class BuildPCMJob extends Job {
         this.lpModelData = lpModelData.lpcModelData;
         this.wordToBuild = lpModelData.wordAsString;
         this.actualWordLoaded = lpModelData.actualWordLoaded;
+        this.isNoun = lpModelData.isNoun;
+        this.isVerb = lpModelData.isVerb;
+        this.wordNumber = lpModelData.wordNumber;
     }
 
     execute() {
-        let pitch = 150;
+        
+        let pitch = 0;
+        debugger
+        
+        // if this one is a verb and the next one is not a verb, then increase the pitch
+        // we do this so that "multiple verb words" are not too monotonous
+        // e.g. "can make" or "have done" "have gone" "can do" "can go" etc. etc.
+        if (this.wordNumber == 0){
+            pitch = 150;
+        } else if (this.isVerb) {
+            pitch = 160;
+        } else if(this.isNoun) {
+            pitch = 160;
+        } else {
+            pitch = 150;
+        }
+
+        // if this was the penultimate word, descend the pitch a little
+        if (this.isPenuiltimateJob()) {
+            pitch = 140;
+        }
+
+        // if this was the last word, then end on a lower pitch
+        if (this.isLastJob()) {
+            pitch = 125;
+        }
+
+        console.log("word, verb?, noun?, pitch: ", this.wordToBuild, this.isVerb, this.isNoun, pitch);
+
         let sampleRate = 1 / this.lpModelData.samplingPeriod;
         let carrierSignalGenerator = new CarrierSignalGenerator(pitch, sampleRate);
         let pcmSignalBuilder = new LPCtoPCMSignalConverter();

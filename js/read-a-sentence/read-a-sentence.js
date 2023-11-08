@@ -107,13 +107,30 @@ playButton.addEventListener('click', function() {
 
     // get the words from the textbox
     let text = document.getElementById('textbox').value;
+
+    var doc = nlp(text);
+    doc.compute('penn');
+    let json = doc.json()[0].terms;
+    let POSArray = json.map(term=> term.penn );
+    console.log(POSArray);
+
+
     let words = text.split(' ');
     let jobQueue = new JobQueue();
 
-    words.forEach(word => {
-        let job = new LoadWordDataJob(word);
+    // scan the words array with a for loop
+    for (let i = 0; i < words.length; i++) {
+        let word = words[i];
+        // pass a flag to the job to indicate if the word a noun and one to indicate if it is a verb
+        // note that if the word appears multiple times with different meaning, the last meaning will be used
+        let isNoun = POSArray[i].includes('NN');
+        let isVerb = POSArray[i].includes('VB');
+
+        let job = new LoadWordDataJob(word, isNoun, isVerb, i);
         jobQueue.enqueue(job);
-    });
+    }
+
+
 
     jobQueue.startJobs(buildPCMForAllWords);
 });
