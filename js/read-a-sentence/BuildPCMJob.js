@@ -40,13 +40,12 @@ class BuildPCMJob extends Job {
         console.log("word, verb?, noun?, pitch: ", this.wordToBuild, this.isVerb, this.isNoun, pitch);
 
         let sampleRate = 1 / this.lpModelData.samplingPeriod;
-        let carrierSignalGenerator = new CarrierSignalGenerator(pitch, sampleRate);
-        let pcmSignalBuilder = new LPCtoPCMSignalConverter();
+        let carrierSignal = new CarrierSignal(pitch, sampleRate);
 
         this.jobQueue.workingData = this.jobQueue.workingData || [];
         this.jobQueue.workingData.push( // an object made my the signal and by the sample rate
             {
-                pcmSignal:  pcmSignalBuilder.build(this.lpModelData, pitch, false, carrierSignalGenerator),
+                pcmSignal:  PCMSignal.fromLPCModel(this.lpModelData, pitch, false, carrierSignal).getBuffer(),
                 sampleRate: sampleRate,
                 wordToBuild: this.wordToBuild,
                 actualWordLoaded: this.actualWordLoaded

@@ -14,9 +14,8 @@ removeDownloadLinkFromDocument();
 
 let pitch = 150;
 let sampleRate = 1 / lpcModelData.samplingPeriod;;
-let carrierSignalGenerator = new CarrierSignalGenerator(pitch, sampleRate);
-let pcmSignalBuilder = new LPCtoPCMSignalConverter();
-let pcmSignalBuffer = pcmSignalBuilder.build(lpcModelData, pitch, false, carrierSignalGenerator);
+let carrierSignal = new CarrierSignal(pitch, sampleRate);
+let pcmSignalBuffer = new PCMSignal.fromLPCModel(lpcModelData, pitch, false, carrierSignal).buffer;
 
 document.body.appendChild(playButton);
 

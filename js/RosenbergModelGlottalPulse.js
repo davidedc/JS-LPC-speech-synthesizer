@@ -1,10 +1,10 @@
-class RosenbergModelGlottalPulseGenerator {
+class RosenbergModelGlottalPulse {
     constructor(pitch, sampleRate) {
         this.pitch = pitch;
         this.sampleRate = sampleRate;
     }
 
-    generate(sampleIndex) {
+    atSample(sampleIndex) {
         const omega = sampleIndex / (this.sampleRate / this.pitch);
         if (sampleIndex < this.sampleRate / (2 * this.pitch)) {
             return 0.5 - 0.5 * Math.cos(Math.PI * omega);

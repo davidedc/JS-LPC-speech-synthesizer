@@ -8,14 +8,11 @@
 //   10000 Hz - LPC order = 12-14 (males, to estimate 5 or 6 formants) and 8-10 (females, to estimate 3 or 4 formants)
 //   22050 Hz - LPC order = 24-26 (males, to estimate 11 or 12 formants) and 22-24 (females, to estimate 10 or 11 formants)
 
-class LPCtoPCMSignalConverter {
-    constructor() {
-        // Size of the moving average window for signal smoothing
-        this.movingAverageWindowSize = 3;
-    }
+class PCMSignal {
 
-    build(lpcModelData, pitch, useFloat32 = false, carrierSignalGenerator) {
-        let pcmSignalBuffer = [];
+    constructor(lpcModelData, pitch, useFloat32 = false, carrierSignal) {
+        this._buffer = [];
+        this.movingAverageWindowSize = 3;
 
         const maxLPCOrder = lpcModelData.maxnCoefficients;
         const pastSamplesBuffer = new Array(maxLPCOrder + 1).fill(0);
@@ -40,10 +37,9 @@ class LPCtoPCMSignalConverter {
             // Process each sample in the current frame
             for (let currentFrameSampleIndex = 0; currentFrameSampleIndex < samplesPerFrame; ++currentFrameSampleIndex) {
                 sampleIndex = (sampleIndex + 1) % (sampleRate / pitch);
-                let carrierSignal = carrierSignalGenerator.generate(sampleIndex);
 
                 // Modulate the carrier signal using LPC coefficients
-                let modulatedCarrier = carrierSignal;
+                let modulatedCarrier = carrierSignal.atSample(sampleIndex);
                 for (let lpcCoefficientIndex = 0; lpcCoefficientIndex < order; ++lpcCoefficientIndex) {
                     let lpcCoefficientJ = lpcCoefficients[lpcCoefficientIndex];
                     lpcCoefficientJ = useFloat32 ? float64ToFloat32(lpcCoefficientJ) : lpcCoefficientJ;
@@ -66,9 +62,18 @@ class LPCtoPCMSignalConverter {
                 let movingAverageSmoothed = movingAvgWindowSum / this.movingAverageWindowSize;
 
 
-                pcmSignalBuffer.push(movingAverageSmoothed);
+                this._buffer.push(movingAverageSmoothed);
             }
         }
-        return pcmSignalBuffer;
     }
+
+    getBuffer() {
+        return this._buffer;
+    }
+
+    // fromLPCModel is a constructor as well 
+    static fromLPCModel(lpcModelData, pitch, useFloat32 = false, carrierSignal) {
+        return new PCMSignal(lpcModelData, pitch, useFloat32, carrierSignal);
+    }
+
 }

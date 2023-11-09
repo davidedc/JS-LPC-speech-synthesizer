@@ -122,10 +122,10 @@
 </script>
   
 
-<script src="js/RosenbergModelGlottalPulseGenerator.js"></script>
-<script src="js/LPCtoPCMSignalConverter.js"></script>
-<script src="js/CarrierSignalGenerator.js"></script>
-<script src="js/AspirationGenerator.js"></script>
+<script src="js/RosenbergModelGlottalPulse.js"></script>
+<script src="js/PCMSignal.js"></script>
+<script src="js/CarrierSignal.js"></script>
+<script src="js/Aspiration.js"></script>
 
 <script src="js/audioBufferToWavBlob.js"></script>
 <script src="js/BasicWaveformPlot.js"></script>
@@ -139,9 +139,8 @@
   // this one loads "as" and uses its last part as the "s" of plurals (the plurals that end with s, that is)
   let pitch = 150;
   let sampleRate = 1 / asModelData.samplingPeriod;
-  let carrierSignalGenerator = new CarrierSignalGenerator(pitch, sampleRate);
-  let pcmSignalBuilder = new LPCtoPCMSignalConverter();
-  var asPCMSignal= pcmSignalBuilder.build(asModelData, pitch, false, carrierSignalGenerator);
+  let carrierSignal = new CarrierSignal(pitch, sampleRate);
+  var asPCMSignal= PCMSignal.fromLPCModel(asModelData, pitch, false, carrierSignal).getBuffer();
   let numberOfSamplesToAppend = 2700;
   let sSignal = asPCMSignal.slice(-numberOfSamplesToAppend);
   delete asPCMSignal;
