@@ -40,8 +40,8 @@ body {
     width: 320px; /* same as textarea including padding */
   }
   
-  .pitch-control {
-    text-align: center;
+  .pitch-control label {
+    font-size: inherit; /* This will make the font size the same as the body, which is the same as the button */
   }
 
   /* Container for the elements */
