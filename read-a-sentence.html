@@ -61,7 +61,7 @@
     input.max = '300';
     input.value = pitchDefaultValues[pitchType];
     input.onchange = function() { updatePitchValue(pitchType, this.value); };
-    plus1Button.textContent = '+1';
+    plus1Button.textContent = '>';
     plus1Button.onclick = function() { adjustPitch(pitchType, 1); };
     plus5Button.textContent = '+5';
     plus5Button.onclick = function() { adjustPitch(pitchType, 5); };
