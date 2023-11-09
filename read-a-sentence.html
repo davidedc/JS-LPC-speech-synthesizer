@@ -11,7 +11,7 @@
     <select id="dropdown"></select>
     <textarea id="textbox"></textarea>
     <div class="pitch-controls">
-      <div><label>Pitch for the first word: <button>-1</button><button>-5</button><input type="number" id="pitchFirstWord" min="50" max="300" value="150"><button>+1</button><button>+5</button></label></div>
+      <div><label>Pitch for the first word: <button>-1</button><button>-5</button><input type="number" id="pitchFirstWord" min="50" max="300" value="150" onchange="updatePitchValue('pitchFirstWord', this.value)"><button>+1</button><button>+5</button></label></div>
       <div><label>Pitch for a verb: <button>-1</button><button>-5</button><input type="number" id="pitchVerb" min="50" max="300" value="150"><button>+1</button><button>+5</button></label></div>
       <div><label>Pitch for a noun: <button>-1</button><button>-5</button><input type="number" id="pitchNoun" min="50" max="300" value="150"><button>+1</button><button>+5</button></label></div>
       <div><label>Pitch for everything else: <button>-1</button><button>-5</button><input type="number" id="pitchElse" min="50" max="300" value="150"><button>+1</button><button>+5</button></label></div>
@@ -24,6 +24,19 @@
 </html>
 
 <script>
+  // Define global pitch variables with default values
+  var pitchFirstWord = 150;
+  var pitchVerb = 150;
+  var pitchNoun = 150;
+  var pitchElse = 150;
+  var pitchPenultimate = 150;
+  var pitchLastWord = 150;
+
+  // Update global pitch variables when pitch controls change
+  function updatePitchValue(pitchType, newValue) {
+    window[pitchType] = parseInt(newValue, 10);
+  }
+
   var lpcModelData = null; // filled by the testLPCData.js script
   var availableWords = null;
 </script>
