@@ -18,13 +18,13 @@ class BuildPCMJob extends Job {
         // we do this so that "multiple verb words" are not too monotonous
         // e.g. "can make" or "have done" "have gone" "can do" "can go" etc. etc.
         if (this.wordNumber == 0){
-            pitch = 150; // pitch for the first word
+            pitch = pitchFirstWord; // pitch for the first word
         } else if (this.isVerb) {
-            pitch = 160; // pitch for a verb
+            pitch = pitchVerb; // pitch for a verb
         } else if(this.isNoun) {
-            pitch = 160; // pitch for a noun
+            pitch = pitchNoun; // pitch for a noun
         } else {
-            pitch = 150; // pitch for a everything else
+            pitch = pitchElse; // pitch for everything else
         }
 
         // if this was the penultimate word, descend the pitch a little
