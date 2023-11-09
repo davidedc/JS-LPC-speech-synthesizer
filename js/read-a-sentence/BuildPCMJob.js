@@ -18,23 +18,23 @@ class BuildPCMJob extends Job {
         // we do this so that "multiple verb words" are not too monotonous
         // e.g. "can make" or "have done" "have gone" "can do" "can go" etc. etc.
         if (this.wordNumber == 0){
-            pitch = pitchFirstWord; // pitch for the first word
+            pitch = window.pitchFirstWord; // pitch for the first word
         } else if (this.isVerb) {
-            pitch = pitchVerb; // pitch for a verb
+            pitch = window.pitchVerb; // pitch for a verb
         } else if(this.isNoun) {
-            pitch = pitchNoun; // pitch for a noun
+            pitch = window.pitchNoun; // pitch for a noun
         } else {
-            pitch = pitchElse; // pitch for everything else
+            pitch = window.pitchElse; // pitch for everything else
         }
 
         // if this was the penultimate word, descend the pitch a little
         if (this.isPenuiltimateJob()) {
-            pitch = 140; // pitch for the penultimate word
+            pitch = window.pitchPenultimate; // pitch for the penultimate word
         }
 
         // if this was the last word, then end on a lower pitch
         if (this.isLastJob()) {
-            pitch = 125; // pitch for the last word
+            pitch = window.pitchLastWord; // pitch for the last word
         }
 
         console.log("word, verb?, noun?, pitch: ", this.wordToBuild, this.isVerb, this.isNoun, pitch);
