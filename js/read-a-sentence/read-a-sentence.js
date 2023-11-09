@@ -58,11 +58,9 @@ function playPCMOfNextWord(pcmSignalBuffersAndSampleRates) {
     }
 }
 
-
-// add a dropdown with some sentences.
-let dropdown = document.createElement('select');
-dropdown.id = 'dropdown';
-document.body.appendChild(dropdown);
+let dropdown = document.getElementById('dropdown');
+let textbox = document.getElementById('textbox');
+let playButton = document.getElementById('playButton');
 
 const sentences = [
     'one day',
@@ -83,26 +81,15 @@ sentences.forEach((sentence) => {
     option.value = option.textContent = sentence;
     dropdown.appendChild(option);
 });
+
+
+textbox.textContent = dropdown.value;
 dropdown.addEventListener('change', function() {
-        textbox.textContent = dropdown.value;
+    textbox.textContent = textbox.value = dropdown.value;
     }
 );
 
-
-// add a textbox and a play button to the document
-let textbox = document.createElement('textarea');
-textbox.id = 'textbox';
-// pre-populate the textbox with the sentence selected in the dropdown
-textbox.textContent = dropdown.value;
-document.body.appendChild(textbox);
-
-let playButton = document.createElement('button');
-playButton.id = 'playButton';
-playButton.textContent = 'Read';
-document.body.appendChild(playButton);
-
 // when the play button is clicked...
-
 playButton.addEventListener('click', function() {
 
     // get the words from the textbox
