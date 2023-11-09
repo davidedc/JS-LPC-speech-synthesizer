@@ -10,14 +10,7 @@
   <div class="container">
     <select id="dropdown"></select>
     <textarea id="textbox"></textarea>
-    <div id="pitchControls" class="pitch-controls">
-      <div><label>Pitch for the first word: <button onclick="adjustPitch('pitchFirstWord', -1)">-1</button><button onclick="adjustPitch('pitchFirstWord', -5)">-5</button><input type="number" id="pitchFirstWord" min="50" max="300" onchange="updatePitchValue('pitchFirstWord', this.value)"><button onclick="adjustPitch('pitchFirstWord', 1)">+1</button><button onclick="adjustPitch('pitchFirstWord', 5)">+5</button></label></div>
-      <div><label>Pitch for a verb: <button onclick="adjustPitch('pitchVerb', -1)">-1</button><button onclick="adjustPitch('pitchVerb', -5)">-5</button><input type="number" id="pitchVerb" min="50" max="300" onchange="updatePitchValue('pitchVerb', this.value)"><button onclick="adjustPitch('pitchVerb', 1)">+1</button><button onclick="adjustPitch('pitchVerb', 5)">+5</button></label></div>
-      <div><label>Pitch for a noun: <button onclick="adjustPitch('pitchNoun', -1)">-1</button><button onclick="adjustPitch('pitchNoun', -5)">-5</button><input type="number" id="pitchNoun" min="50" max="300" onchange="updatePitchValue('pitchNoun', this.value)"><button onclick="adjustPitch('pitchNoun', 1)">+1</button><button onclick="adjustPitch('pitchNoun', 5)">+5</button></label></div>
-      <div><label>Pitch for everything else: <button onclick="adjustPitch('pitchElse', -1)">-1</button><button onclick="adjustPitch('pitchElse', -5)">-5</button><input type="number" id="pitchElse" min="50" max="300" onchange="updatePitchValue('pitchElse', this.value)"><button onclick="adjustPitch('pitchElse', 1)">+1</button><button onclick="adjustPitch('pitchElse', 5)">+5</button></label></div>
-      <div><label>Pitch for the penultimate word: <button onclick="adjustPitch('pitchPenultimate', -1)">-1</button><button onclick="adjustPitch('pitchPenultimate', -5)">-5</button><input type="number" id="pitchPenultimate" min="50" max="300" onchange="updatePitchValue('pitchPenultimate', this.value)"><button onclick="adjustPitch('pitchPenultimate', 1)">+1</button><button onclick="adjustPitch('pitchPenultimate', 5)">+5</button></label></div>
-      <div><label>Pitch for the last word: <button onclick="adjustPitch('pitchLastWord', -1)">-1</button><button onclick="adjustPitch('pitchLastWord', -5)">-5</button><input type="number" id="pitchLastWord" min="50" max="300" onchange="updatePitchValue('pitchLastWord', this.value)"><button onclick="adjustPitch('pitchLastWord', 1)">+1</button><button onclick="adjustPitch('pitchLastWord', 5)">+5</button></label></div>
-    </div>
+    <div id="pitchControls" class="pitch-controls"></div>
     <button id="playButton">Read</button>
   </div>
 </body>
@@ -45,6 +38,52 @@
 
   // Define global pitch variables with default values
   var pitchFirstWord, pitchVerb, pitchNoun, pitchElse, pitchPenultimate, pitchLastWord;
+
+
+  // build pitch inputs programmatically
+  for (let pitchType of pitchTypes) {
+    window[pitchType] = pitchDefaultValues[pitchType];
+    var pitchControl = document.createElement('div');
+    var label = document.createElement('label');
+    var minus1Button = document.createElement('button');
+    var minus5Button = document.createElement('button');
+    var input = document.createElement('input');
+    var plus1Button = document.createElement('button');
+    var plus5Button = document.createElement('button');
+
+    minus1Button.textContent = '-1';
+    minus1Button.onclick = function() { adjustPitch(pitchType, -1); };
+    minus5Button.textContent = '-5';
+    minus5Button.onclick = function() { adjustPitch(pitchType, -5); };
+    input.type = 'number';
+    input.id = pitchType;
+    input.min = '50';
+    input.max = '300';
+    input.value = pitchDefaultValues[pitchType];
+    input.onchange = function() { updatePitchValue(pitchType, this.value); };
+    plus1Button.textContent = '+1';
+    plus1Button.onclick = function() { adjustPitch(pitchType, 1); };
+    plus5Button.textContent = '+5';
+    plus5Button.onclick = function() { adjustPitch(pitchType, 5); };
+
+    // obtain a piece of the label from pitchType like so:
+    // "pitchFirstWord" -> "first word"
+    // i.e. remove "pitch" and insert a space before each capital letter, and trim and lowercase everything
+    var pitchTypeWithoutPitch = pitchType.replace('pitch', '');
+    var pitchTypeWithoutPitchAndCapitalLetters = pitchTypeWithoutPitch.replace(/[A-Z]/g, ' $&');
+    var pitchTypeWithoutPitchAndCapitalLettersTrimmed = pitchTypeWithoutPitchAndCapitalLetters.trim();
+    var pitchTypeWithoutPitchAndCapitalLettersTrimmedLowercased = pitchTypeWithoutPitchAndCapitalLettersTrimmed.toLowerCase();
+
+    label.appendChild(document.createTextNode('Pitch for ' + pitchTypeWithoutPitchAndCapitalLettersTrimmedLowercased + ': '));
+    label.appendChild(minus1Button);
+    label.appendChild(minus5Button);
+    label.appendChild(input);
+    label.appendChild(plus1Button);
+    label.appendChild(plus5Button);
+    pitchControl.appendChild(label);
+    document.getElementById('pitchControls').appendChild(pitchControl);
+  }
+
 
   // Adjust pitch value by a certain increment
   function adjustPitch(pitchType, increment) {
