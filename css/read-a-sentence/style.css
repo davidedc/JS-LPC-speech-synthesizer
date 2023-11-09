@@ -1,0 +1,47 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f7f7f7;
+  }
+
+  #textbox, #dropdown, #playButton {
+    padding: 10px;
+    margin: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+  }
+
+  #textbox {
+    width: 300px;
+    height: 100px;
+    resize: none;
+  }
+
+  #playButton {
+    background-color: #008cba;
+    color: white;
+    cursor: pointer;
+    border: none;
+    outline: none;
+  }
+
+  #playButton:hover {
+    background-color: #005f73;
+  }
+
+  #dropdown {
+    width: 320px; /* same as textarea including padding */
+  }
+
+  /* Container for the elements */
+  .container {
+    display: flex;
+    flex-direction: column;
+  }
