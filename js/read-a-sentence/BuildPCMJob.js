@@ -24,7 +24,7 @@ class BuildPCMJob extends Job {
         } else if(this.isNoun) {
             pitch = window.pitchNoun; // pitch for a noun
         } else {
-            pitch = window.pitchElse; // pitch for everything else
+            pitch = window.pitchEverythingElse; // pitch for everything else
         }
 
         // if this was the penultimate word, descend the pitch a little
