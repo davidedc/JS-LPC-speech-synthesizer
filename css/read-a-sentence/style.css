@@ -39,6 +39,10 @@ body {
   #dropdown {
     width: 320px; /* same as textarea including padding */
   }
+  
+  .pitch-control {
+    text-align: center;
+  }
 
   /* Container for the elements */
   .container {

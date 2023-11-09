@@ -44,6 +44,7 @@
   for (let pitchType of pitchTypes) {
     window[pitchType] = pitchDefaultValues[pitchType];
     var pitchControl = document.createElement('div');
+    pitchControl.className = 'pitch-control';
     var label = document.createElement('label');
     var minus1Button = document.createElement('button');
     var minus5Button = document.createElement('button');
