@@ -41,7 +41,7 @@ body {
   }
   
   .pitch-control label {
-    font-size: inherit; /* This will make the font size the same as the body, which is the same as the button */
+    font-size: 13px;
   }
 
   /* Container for the elements */
