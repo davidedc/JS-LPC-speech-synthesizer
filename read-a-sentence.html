@@ -53,7 +53,7 @@
 
     minus1Button.textContent = '<';
     minus1Button.onclick = function() { adjustPitch(pitchType, -1); };
-    minus5Button.textContent = '-5';
+    minus5Button.textContent = '<<';
     minus5Button.onclick = function() { adjustPitch(pitchType, -5); };
     input.type = 'number';
     input.id = pitchType;
@@ -63,7 +63,7 @@
     input.onchange = function() { updatePitchValue(pitchType, this.value); };
     plus1Button.textContent = '>';
     plus1Button.onclick = function() { adjustPitch(pitchType, 1); };
-    plus5Button.textContent = '+5';
+    plus5Button.textContent = '<<';
     plus5Button.onclick = function() { adjustPitch(pitchType, 5); };
 
     // obtain a piece of the label from pitchType like so:
