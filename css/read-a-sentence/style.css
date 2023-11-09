@@ -40,8 +40,15 @@ body {
     width: 320px; /* same as textarea including padding */
   }
   
+  .pitch-control {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
   .pitch-control label {
     font-size: 13px;
+    margin: 0 5px; /* Add some spacing around the label */
   }
 
   /* Container for the elements */
