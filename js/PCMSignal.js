@@ -21,7 +21,8 @@ class PCMSignal {
 
         let secondsBetweenFrameStarts = lpcModelData.dx;
         const sampleRate = 1 / lpcModelData.samplingPeriod;
-        const samplesPerFrame = Math.floor(secondsBetweenFrameStarts * sampleRate);
+        const speed = 1;
+        const samplesPerFrame = Math.floor(secondsBetweenFrameStarts * sampleRate * (1/speed));
 
         let movingAvgWindowBuffer = new Array(this.movingAverageWindowSize).fill(0);
         let movingAvgWindowSum = 0;
