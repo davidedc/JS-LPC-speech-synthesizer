@@ -4,7 +4,7 @@ function exception(word) {
 
 
 function buildPCMForAllWords(allWordsLPCModels) {
-    let jobQueue = new JobQueue();
+    let jobQueue = new JobQueue(speed);
 
     allWordsLPCModels.forEach(lpcModelData => {
         let job = new BuildPCMJob(lpcModelData);
