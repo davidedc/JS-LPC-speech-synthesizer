@@ -41,13 +41,13 @@ body {
     width: 320px; /* same as textarea including padding */
   }
   
-  .pitch-control {
+  .pitch-control, .speed-control {
     display: flex;
     justify-content: center;
     align-items: center;
   }
 
-  .pitch-control label {
+  .pitch-control, .speed-control label {
     margin: 0 5px; /* Add some spacing around the label */
   }
 

@@ -10,7 +10,15 @@
   <div class="container">
     <select id="dropdown"></select>
     <textarea id="textbox"></textarea>
-    <div id="pitchControls" class="pitch-controls"></div>
+    <div id="controls" class="controls">
+        <div id="pitchControls" class="pitch-controls"></div>
+        <div id="speedControl" class="speed-control">
+            <label for="speedInput">Speed:</label>
+            <button onclick="adjustSpeed(-0.1);">&lt;</button>
+            <input type="number" id="speedInput" min="0.5" max="3" step="0.1" value="1">
+            <button onclick="adjustSpeed(0.1);">&gt;</button>
+        </div>
+    </div>
     <button id="playButton">Read</button>
   </div>
 </body>
@@ -109,6 +117,21 @@
     window[pitchType] = parseInt(newValue, 10);
   }
 
+  var speed = 1; // Default speed value
+
+  function adjustSpeed(increment) {
+      var speedInput = document.getElementById('speedInput');
+      var newSpeed = parseFloat(speedInput.value) + increment;
+      // Ensure the new speed is within the allowed range
+      newSpeed = Math.max(0.5, Math.min(newSpeed, 3));
+      speedInput.value = newSpeed.toFixed(1); // Keep one decimal place
+      speed = newSpeed;
+  }
+
+  document.getElementById('speedInput').addEventListener('change', function() {
+      speed = parseFloat(this.value);
+  });
+
   var lpcModelData = null; // filled by the testLPCData.js script
   var availableWords = null;
 </script>
@@ -136,11 +159,12 @@
 <script src="js/read-a-sentence/BuildPCMJob.js"></script>
 
 <script>
+  // TODO note that in theory you should regenerate this if you change the pitch or speed...
   // this one loads "as" and uses its last part as the "s" of plurals (the plurals that end with s, that is)
   let pitch = 150;
   let sampleRate = 1 / asModelData.samplingPeriod;
   let carrierSignal = new CarrierSignal(pitch, sampleRate);
-  var asPCMSignal= PCMSignal.fromLPCModel(asModelData, pitch, false, carrierSignal).getBuffer();
+  var asPCMSignal= PCMSignal.fromLPCModel(asModelData, pitch, speed, false, carrierSignal).getBuffer();
   let numberOfSamplesToAppend = 2700;
   let sSignal = asPCMSignal.slice(-numberOfSamplesToAppend);
   delete asPCMSignal;

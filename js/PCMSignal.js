@@ -10,7 +10,7 @@
 
 class PCMSignal {
 
-    constructor(lpcModelData, pitch, useFloat32 = false, carrierSignal) {
+    constructor(lpcModelData, pitch, speed, useFloat32 = false, carrierSignal) {
         this._buffer = [];
         this.movingAverageWindowSize = 3;
 
@@ -21,8 +21,7 @@ class PCMSignal {
 
         let secondsBetweenFrameStarts = lpcModelData.dx;
         const sampleRate = 1 / lpcModelData.samplingPeriod;
-        const speed = 1;
-        const samplesPerFrame = Math.floor(secondsBetweenFrameStarts * sampleRate * (1/speed));
+        const samplesPerFrame = Math.floor(secondsBetweenFrameStarts * sampleRate / speed);
 
         let movingAvgWindowBuffer = new Array(this.movingAverageWindowSize).fill(0);
         let movingAvgWindowSum = 0;
@@ -73,8 +72,8 @@ class PCMSignal {
     }
 
     // fromLPCModel is a constructor as well 
-    static fromLPCModel(lpcModelData, pitch, useFloat32 = false, carrierSignal) {
-        return new PCMSignal(lpcModelData, pitch, useFloat32, carrierSignal);
+    static fromLPCModel(lpcModelData, pitch, speed, useFloat32 = false, carrierSignal) {
+        return new PCMSignal(lpcModelData, pitch, speed, useFloat32, carrierSignal);
     }
 
 }
