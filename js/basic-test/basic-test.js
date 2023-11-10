@@ -78,16 +78,15 @@ function findBufferMinMax(pcmSignalBuffer) {
 }
 
 function createLinkToDownloadPCMBufferAsWavFile(buffer) {
-    let wave = Wave.fromBuffer(buffer);
-    let wavBlob = wave.toBlob();
-    let wavBlobUrl = window.URL.createObjectURL(wavBlob);
-    let wavBlobLink = document.createElement('a');
+    let waveBlob = Wave.fromBuffer(buffer).toBlob();
+    let waveBlobUrl = window.URL.createObjectURL(waveBlob);
+    let waveBlobLink = document.createElement('a');
     // give the link an id so we can remove it from the document if we need to
-    wavBlobLink.id = 'downloadLink';
-    wavBlobLink.href = wavBlobUrl;
-    wavBlobLink.download = 'audio.wav';
-    wavBlobLink.innerHTML = 'download';
-    document.body.appendChild(wavBlobLink);
+    waveBlobLink.id = 'downloadLink';
+    waveBlobLink.href = waveBlobUrl;
+    waveBlobLink.download = 'audio.wav';
+    waveBlobLink.innerHTML = 'download';
+    document.body.appendChild(waveBlobLink);
 }
 
 function removeAllCanvasesFromDocument() {
