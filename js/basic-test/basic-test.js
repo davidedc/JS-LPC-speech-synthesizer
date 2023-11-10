@@ -78,7 +78,8 @@ function findBufferMinMax(pcmSignalBuffer) {
 }
 
 function createLinkToDownloadPCMBufferAsWavFile(buffer) {
-    let wavBlob = audioBufferToWavBlob(buffer);
+    let wave = Wave.fromBuffer(buffer);
+    let wavBlob = wave.toBlob();
     let wavBlobUrl = window.URL.createObjectURL(wavBlob);
     let wavBlobLink = document.createElement('a');
     // give the link an id so we can remove it from the document if we need to

@@ -1,4 +1,35 @@
-function audioBufferToWavBlob(abuffer) {
+class Wave {
+    constructor(abuffer) {
+        this.abuffer = abuffer;
+    }
+
+    static fromBuffer(abuffer) {
+        return new Wave(abuffer);
+    }
+
+    toBlob() {
+        let numOfChan = this.abuffer.numberOfChannels,
+            length = this.abuffer.length * numOfChan * 2 + 44,
+            buffer = new ArrayBuffer(length),
+            view = new DataView(buffer),
+            channels = [],
+            i, sample, offset = 0, pos = 0;
+
+        // ... (rest of the original audioBufferToWavBlob function code goes here)
+
+        // create Blob
+        return new Blob([buffer], { type: "audio/wav" });
+    }
+
+    // Helper functions setUint16 and setUint32 will be methods of the Wave class
+    setUint16(data) {
+        // ... (original setUint16 function code goes here)
+    }
+
+    setUint32(data) {
+        // ... (original setUint32 function code goes here)
+    }
+}
 
     let numOfChan = abuffer.numberOfChannels, length = abuffer.length * numOfChan * 2 + 44, buffer = new ArrayBuffer(length), view = new DataView(buffer), channels = [], i, sample, offset = 0, pos = 0;
 
