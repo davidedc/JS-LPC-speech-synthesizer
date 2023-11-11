@@ -122,6 +122,34 @@ function trimQuietFrames(data) {
 }
 
 
+function convertToBase64AndConcatenate(lpcModelData) {
+    lpcModelData.frames.forEach(frame => {
+        let concatenatedBase64 = '';
+
+        frame.a.forEach(number => {
+            let float32Array = new Float32Array([number]);
+            let buffer = float32Array.buffer;
+            let uint8Array = new Uint8Array(buffer);
+            let binaryString = String.fromCharCode.apply(null, uint8Array);
+            let base64String = btoa(binaryString);
+
+            // 32 bits are always encoded in 6 characters
+            // (because each character encodes 6 bits, so 5 characters encode 30 bits, so we need 6 characters to encode 32 bits)
+            // and then padded with '='
+            // so we can remove all the '=' characters
+            // and then we'll remember to take those 6 at a time when decoding
+            base64String = base64String.replace(/=/g, '');
+
+            concatenatedBase64 += base64String;
+        });
+
+        frame.a = concatenatedBase64;
+    });
+
+    return lpcModelData;
+}
+
+
 function processData(inputFilePath, outputFilePath) {
     fs.readFile(inputFilePath, 'utf8', (err, text) => {
         if (err) {
@@ -141,6 +169,23 @@ function processData(inputFilePath, outputFilePath) {
 
             console.log(`Successfully written LPC data to ${outputFilePath}`);
         });
+
+        // generate another file that contains the LPC A arrays as base64 strings
+        const lpcModelDataWithBase64 = convertToBase64AndConcatenate(lpcModelData);
+        const jsContentWithBase64 = `lpcModelData = ${JSON.stringify(lpcModelDataWithBase64, null, 2)};`;
+
+        const outputFilePathWithBase64 = outputFilePath.replace('.js', '.base64.js');
+        fs.writeFile(outputFilePathWithBase64, jsContentWithBase64, (err) => {
+            if (err) {
+                console.error('Error writing the output file:', err);
+                return;
+            }
+
+            console.log(`Successfully written LPC data to ${outputFilePathWithBase64}`);
+        });
+
+
+
     });
 }
 
