@@ -63,6 +63,7 @@ let textbox = document.getElementById('textbox');
 let playButton = document.getElementById('playButton');
 
 const sentences = [
+    'one might be able to operate a switch two or three times a second',
     'one day',
     'They can make a new day for all people',
     'People say that only time will tell if he can make a new way for them',
@@ -110,8 +111,12 @@ playButton.addEventListener('click', function() {
         let word = words[i];
         // pass a flag to the job to indicate if the word a noun and one to indicate if it is a verb
         // note that if the word appears multiple times with different meaning, the last meaning will be used
-        let isNoun = POSArray[i].includes('NN');
-        let isVerb = POSArray[i].includes('VB');
+        let isNoun = false;
+        let isVerb = false;
+        if (POSArray[i]) {
+            isNoun = POSArray[i].includes('NN');
+            isVerb = POSArray[i].includes('VB');
+        }
 
         let job = new LoadWordDataJob(word, isNoun, isVerb, i);
         jobQueue.enqueue(job);

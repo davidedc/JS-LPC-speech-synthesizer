@@ -15,7 +15,7 @@
         <div id="speedControl" class="speed-control">
             <label for="speedInput">Speed:</label>
             <button onclick="adjustSpeed(-0.1);">&lt;</button>
-            <input type="number" id="speedInput" min="0.5" max="3" step="0.1" value="1">
+            <input type="number" id="speedInput" min="0.5" max="3" step="0.1">
             <button onclick="adjustSpeed(0.1);">&gt;</button>
         </div>
     </div>
@@ -36,12 +36,12 @@
   ];
 
   var pitchDefaultValues = {
-    'pitchFirstWord': 150,
-    'pitchVerb': 160,
+    'pitchFirstWord': 170,
+    'pitchVerb': 170,
     'pitchNoun': 160,
     'pitchEverythingElse': 150,
-    'pitchPenultimate': 140,
-    'pitchLastWord': 125
+    'pitchPenultimate': 130,
+    'pitchLastWord': 120
   };
 
   // Define global pitch variables with default values
@@ -117,7 +117,11 @@
     window[pitchType] = parseInt(newValue, 10);
   }
 
-  var speed = 1; // Default speed value
+
+  var speed = 1.6; // Default speed value
+  // set the value of the speed input to the default value of above
+  document.getElementById('speedInput').value = speed;
+
 
   function adjustSpeed(increment) {
       var speedInput = document.getElementById('speedInput');
