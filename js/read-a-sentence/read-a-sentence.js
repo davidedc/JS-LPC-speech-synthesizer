@@ -64,6 +64,7 @@ let playButton = document.getElementById('playButton');
 
 const sentences = [
     'one might be able to operate a switch two or three times a second',
+    'finding doing seconding being knowing looking noting saying seeing telling thinking wanting willing',
     'one day',
     'They can make a new day for all people',
     'People say that only time will tell if he can make a new way for them',

@@ -141,13 +141,19 @@
 </script>
 
 <script src="speechAudio/available-words.js"></script>
-<script src="speechAudio/sound-chunks/suffixes/json-js/suffix-s.mp3.LPC.json.js"></script>
 
+<script src="speechAudio/sound-chunks/suffixes/json-js/suffix-s.mp3.LPC.json.js"></script>
 <script>
   var suffixSModelData = lpcModelData;
   var lpcModelData = null;
 </script>
-  
+
+<script src="speechAudio/sound-chunks/suffixes/json-js/suffix-ing.mp3.LPC.json.js"></script>
+<script>
+  var suffixIngModelData = lpcModelData;
+  var lpcModelData = null;
+</script>
+
 
 <script src="js/RosenbergModelGlottalPulse.js"></script>
 <script src="js/PCMSignal.js"></script>
@@ -161,19 +167,6 @@
 <script src="js/read-a-sentence/Job.js"></script>
 <script src="js/read-a-sentence/LoadWordDataJob.js"></script>
 <script src="js/read-a-sentence/BuildPCMJob.js"></script>
-
-<script>
-  // TODO note that in theory you should regenerate this if you change the pitch or speed...
-  // this one loads "as" and uses its last part as the "s" of plurals (the plurals that end with s, that is)
-  let pitch = 150;
-  let sampleRate = 1 / suffixSModelData.samplingPeriod;
-  let carrierSignal = new CarrierSignal(pitch, sampleRate);
-  var asPCMSignal= PCMSignal.fromLPCModel(suffixSModelData, pitch, speed, false, carrierSignal).getBuffer();
-  //let numberOfSamplesToAppend = 2700;
-  //let sSignal = asPCMSignal.slice(-numberOfSamplesToAppend);
-  let sSignal = asPCMSignal;
-  delete asPCMSignal;
-</script>
 
 <script src="js/read-a-sentence/libs/compromise-14.10.0/compromise-two.js "></script>
 <script src="js/read-a-sentence/read-a-sentence.js"></script>

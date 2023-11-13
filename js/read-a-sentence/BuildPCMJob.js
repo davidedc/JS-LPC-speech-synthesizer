@@ -54,21 +54,37 @@ class BuildPCMJob extends Job {
             }
         );
 
-        this.addSIfSPlural();
+        this.addSIfSPlural(pitch, speed, carrierSignal);
+        this.addIng(pitch, speed, carrierSignal);
 
         this.success();
     }
 
     // if we in the case of a plural i.e. actualWordLoaded = wordToBuild + 's'
     // then append to the pcmSignal the samples of the "s"
-    addSIfSPlural() {
+    addSIfSPlural(pitch, speed, carrierSignal) {
         if (this.wordToBuild === this.actualWordLoaded + 's') {
             let pcmSignal = this.jobQueue.workingData[this.jobQueue.workingData.length - 1].pcmSignal;
             // remove the last samples from the pcmSignal
             var removedSamples = 3000;
             pcmSignal.splice(pcmSignal.length - removedSamples, removedSamples);
+
+            var sSignal = PCMSignal.fromLPCModel(suffixSModelData, pitch, speed, false, carrierSignal).getBuffer();
             // append to the samples of the "s" (from sSignal)
             pcmSignal.push(...sSignal);
+        }
+    }
+
+    addIng(pitch, speed, carrierSignal) {
+        if (this.wordToBuild === this.actualWordLoaded + 'ing') {
+            let pcmSignal = this.jobQueue.workingData[this.jobQueue.workingData.length - 1].pcmSignal;
+            // remove the last samples from the pcmSignal
+            var removedSamples = 3000;
+            pcmSignal.splice(pcmSignal.length - removedSamples, removedSamples);
+
+            var ingSignal = PCMSignal.fromLPCModel(suffixIngModelData, pitch, speed, false, carrierSignal).getBuffer();
+            // append to the samples of the "ing" (from ingSignal)
+            pcmSignal.push(...ingSignal);
         }
     }
 }

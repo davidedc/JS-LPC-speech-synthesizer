@@ -15,6 +15,7 @@ class LoadWordDataJob extends Job {
             this.loadWordData();
             return
         }
+
         // if the word ends with an 's', then try to load the data for the word without the 's'
         if (this.wordAsString.endsWith('s')) {
             let wordWithoutS = this.wordAsString.slice(0, -1);
@@ -24,6 +25,17 @@ class LoadWordDataJob extends Job {
                 return;
             }
         }
+
+        // if the word ends with an 'ing', then try to load the data for the word without the 'ing'
+        if (this.wordAsString.endsWith('ing')) {
+            let wordWithoutIng = this.wordAsString.slice(0, -3);
+            if (availableWords.includes(wordWithoutIng)) {
+                this.actualWordBeingLoaded = wordWithoutIng;
+                this.loadWordData();
+                return;
+            }
+        }
+
         console.error(`Exception: no audio data for word "${this.wordAsString}"`);
 
     }
