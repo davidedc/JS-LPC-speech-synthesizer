@@ -2,3 +2,8 @@
 speechAudio/.DS_Store
 .DS_Store
 .aider*
+speechAudio/json-js/*.js
+speechAudio/lpc/*
+speechAudio/m4v/*
+speechAudio/mp3/*
+
