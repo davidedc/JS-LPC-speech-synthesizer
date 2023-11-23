@@ -1,9 +1,7 @@
 
-speechAudio/.DS_Store
-.DS_Store
+**/.DS_Store
 .aider*
-speechAudio/json-js/*.js
-speechAudio/lpc/*
-speechAudio/m4v/*
-speechAudio/mp3/*
-speechAudio/json-js/.DS_Store
+data/words/json-js/*.js
+data/words/lpc/*
+data/words/m4v/*
+data/words/mp3/*
