@@ -40,10 +40,10 @@ procedure processFiles: .inputDirectory$, .outputDirectory$
     removeObject: soundFilesListID
 endproc
 
-inputDirectory$ = "/Users/davidedellacasa/Desktop/mysw/JS-LPC-speech-synthesizer/speechAudio"
-outputDirectory$ = "/Users/davidedellacasa/Desktop/mysw/JS-LPC-speech-synthesizer/speechAudio/lpc"
+inputDirectory$ = "/Volumes/Seagate 5tb/JS-LPC-Project-too-big-for-internal-drive/JS-LPC-speech-synthesizer/speechAudio"
+outputDirectory$ = "/Volumes/Seagate 5tb/JS-LPC-Project-too-big-for-internal-drive/JS-LPC-speech-synthesizer/speechAudio/lpc"
 @processFiles: inputDirectory$, outputDirectory$
 
-inputDirectory$ = "/Users/davidedellacasa/Desktop/mysw/JS-LPC-speech-synthesizer/speechAudio/sound-chunks/suffixes"
-outputDirectory$ = "/Users/davidedellacasa/Desktop/mysw/JS-LPC-speech-synthesizer/speechAudio/sound-chunks/suffixes/lpc"
+inputDirectory$ = "/Volumes/Seagate 5tb/JS-LPC-Project-too-big-for-internal-drive/JS-LPC-speech-synthesizer/speechAudio/sound-chunks/suffixes"
+outputDirectory$ = "/Volumes/Seagate 5tb/JS-LPC-Project-too-big-for-internal-drive/JS-LPC-speech-synthesizer/speechAudio/sound-chunks/suffixes/lpc"
 @processFiles: inputDirectory$, outputDirectory$
