@@ -16,7 +16,7 @@ process_file() {
             local safe_word=$(echo "$word" | tr -d '[:punct:]' | tr '[:upper:]' '[:lower:]')
 
             # Create directory structure based on the first three letters of the word
-            local dir_path="m4v"
+            local dir_path="words/m4v"
             for (( i=0; i<${#safe_word} && i<3; i++ )); do
                 dir_path+="/${safe_word:$i:1}"
             done

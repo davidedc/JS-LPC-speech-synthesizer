@@ -59,7 +59,7 @@ class LoadWordDataJob extends Job {
     loadJS() {
         this.attempts++;
         var script = document.createElement('script');
-        script.src = `speechAudio/json-js/${this.actualWordBeingLoaded}.mp3.LPC.json.js`;
+        script.src = `data/words/json-js/${this.actualWordBeingLoaded}.mp3.LPC.json.js`;
 
         // when the script is loaded, first call the "loaded" method in this class, then call the "success" function
         script.onload = () => {

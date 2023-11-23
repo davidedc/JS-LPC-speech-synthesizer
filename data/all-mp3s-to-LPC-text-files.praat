@@ -40,10 +40,10 @@ procedure processFiles: .inputDirectory$, .outputDirectory$
     removeObject: soundFilesListID
 endproc
 
-inputDirectory$ = "/Volumes/Seagate 5tb/JS-LPC-Project-too-big-for-internal-drive/JS-LPC-speech-synthesizer/speechAudio"
-outputDirectory$ = "/Volumes/Seagate 5tb/JS-LPC-Project-too-big-for-internal-drive/JS-LPC-speech-synthesizer/speechAudio/lpc"
+inputDirectory$ = "/Volumes/Seagate 5tb/JS-LPC-Project-too-big-for-internal-drive/JS-LPC-speech-synthesizer/data/words"
+outputDirectory$ = "/Volumes/Seagate 5tb/JS-LPC-Project-too-big-for-internal-drive/JS-LPC-speech-synthesizer/data/words/lpc"
 @processFiles: inputDirectory$, outputDirectory$
 
-inputDirectory$ = "/Volumes/Seagate 5tb/JS-LPC-Project-too-big-for-internal-drive/JS-LPC-speech-synthesizer/speechAudio/sound-chunks/suffixes"
-outputDirectory$ = "/Volumes/Seagate 5tb/JS-LPC-Project-too-big-for-internal-drive/JS-LPC-speech-synthesizer/speechAudio/sound-chunks/suffixes/lpc"
+inputDirectory$ = "/Volumes/Seagate 5tb/JS-LPC-Project-too-big-for-internal-drive/JS-LPC-speech-synthesizer/data/suffixes"
+outputDirectory$ = "/Volumes/Seagate 5tb/JS-LPC-Project-too-big-for-internal-drive/JS-LPC-speech-synthesizer/data/suffixes/lpc"
 @processFiles: inputDirectory$, outputDirectory$
