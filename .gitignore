@@ -1,5 +1,7 @@
-
+.DS_Store
+._.DS_Store
 **/.DS_Store
+**/._.DS_Store
 .aider*
 data/words/json-js/*.js
 data/words/lpc/*
