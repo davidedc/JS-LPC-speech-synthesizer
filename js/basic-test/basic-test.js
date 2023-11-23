@@ -51,6 +51,8 @@ playButton.addEventListener('click', function() { // Assuming a button with this
     // download the pcmSignalBuffer as a wav file
     createLinkToDownloadPCMBufferAsWavFile(buffer);
 
+    createLinkToPlayWavFileBlobViaAudioTag(buffer);
+
 });
 
 function removeDownloadLinkFromDocument() {
@@ -88,6 +90,35 @@ function createLinkToDownloadPCMBufferAsWavFile(buffer) {
     waveBlobLink.download = 'audio.wav';
     waveBlobLink.innerHTML = 'download';
     document.body.appendChild(waveBlobLink);
+}
+
+function createLinkToPlayWavFileBlobViaAudioTag(buffer) {
+    let playWaveLink = document.createElement('a');
+
+    // give the link an id so we can remove it from the document if we need to
+    playWaveLink.id = 'playViaAudioElementLink';
+    playWaveLink.href = '#';
+    playWaveLink.innerHTML = 'play via audio element';
+    document.body.appendChild(playWaveLink);
+
+    // when user clicks on link, call playViaAudioElement function
+    playWaveLink.addEventListener('click', function() {
+        playViaAudioElement(buffer);
+    });
+}
+
+function playViaAudioElement(buffer) {
+    let waveBlob = Wave.fromBuffer(buffer).toBlob();
+    let waveBlobUrl = window.URL.createObjectURL(waveBlob);
+    let audioElement = document.createElement('audio');
+    audioElement.src = waveBlobUrl;
+    audioElement.play();
+
+    // remove the audio element from the document after the audio has finished playing
+    audioElement.addEventListener('ended', function() {
+        document.body.removeChild(audioElement);
+    });
+
 }
 
 function removeAllCanvasesFromDocument() {
